@@ -28,7 +28,8 @@ public class Login {
         u=new Usuario();
         u.setNick(Nick);
         u.setContraseña(Contraseña);
-        if(nick!=null && contraseña!=null && u!=null && misUsuarios.getByDni(u.getDni())!=null){
+        misUsuarios.getByDni(u.getDni());
+        if(Nick.equals(u.getNick()) && Contraseña.equals(u.getContraseña()) && u!=null){
             App.setRoot("hostController");
         }else{
             Windows.error("Iniciar sesión","Error, los datos no son correctos o el usuario no existe. Pruebe a registrarse.","Iniciando sesión");
@@ -42,5 +43,6 @@ public class Login {
 
     @FXML
     private void switchToGoBack() throws IOException{
+        App.setRoot("primaryController");
     }
 }

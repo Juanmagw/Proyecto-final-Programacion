@@ -1,7 +1,9 @@
 package ProyectoFinal.Hotel;
 
 import ProyectoFinal.Hotel.model.Reserva;
+import ProyectoFinal.Hotel.model.Usuario;
 import ProyectoFinal.Hotel.model.dao.ReservaDAO;
+import ProyectoFinal.Hotel.model.dao.UsuarioDAO;
 import ProyectoFinal.Hotel.utils.Errores;
 import ProyectoFinal.Hotel.utils.popUpWindows.Windows;
 import javafx.beans.property.ObjectProperty;
@@ -14,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,6 +31,7 @@ import java.util.ResourceBundle;
 public class HostController implements Initializable {
     ObservableList<Reserva> listaReservas;
     ReservaDAO misReservas;
+    Usuario u;
     Reserva r;
 
     /**
@@ -89,21 +93,20 @@ public class HostController implements Initializable {
             s.setValue(misReservas.getValue().getDniCliente());
             return s;
         });
-        fechaEntrada.setCellValueFactory(misReservas ->{
-            DatePicker s  = new DatePicker();
-            s.setValue(misReservas.getValue().getFechaEntrada());
-            return (ObservableValue<LocalDate>) s;
-        });
-        fechaSalida.setCellValueFactory(misReservas ->{
-            DatePicker s  = new DatePicker();
-            s.setValue(misReservas.getValue().getFechaSalida());
-            return (ObservableValue<LocalDate>) s;
-        });
+        fechaEntrada.setCellValueFactory(new PropertyValueFactory<Reserva, LocalDate>("fechaEntrada"));
+        fechaSalida.setCellValueFactory(new PropertyValueFactory<Reserva, LocalDate>("fechaSalida"));
 
         listaReservas= FXCollections.observableArrayList();
         misReservas=new ReservaDAO();
         listaReservas.addAll(misReservas.getAll());
         tablaReserva.setItems(listaReservas);
+
+
+        misReservas=new ReservaDAO();
+        misReservas.getAll();
+        for(Reserva r: misReservas.getAll()){
+            r.setCliente(new UsuarioDAO().getByDni(u.getNick()));
+        }
     }
 
     /**
@@ -173,6 +176,6 @@ public class HostController implements Initializable {
      */
     @FXML
     private void switchToGoBack() throws IOException{
-        App.setRoot("roomController");
+        App.setRoot("login");
     }
 }

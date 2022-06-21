@@ -37,9 +37,9 @@ public class ReservaDAO implements IReservaDAO {
 		String sql = "Insert into reserva (dni,fechaEntrada,fechaSalida) values(?,?,?)";
 		try {
 			PreparedStatement ps = miCon.prepareStatement(sql);
-			ps.setString(3, r.getDniCliente());
-			ps.setDate(4, Date.valueOf(r.getFechaEntrada()));
-			ps.setDate(5, Date.valueOf(r.getFechaSalida()));
+			ps.setString(1, r.getDniCliente());
+			ps.setObject(2, r.getFechaEntrada());
+			ps.setObject(3, r.getFechaSalida());
 			ps.executeUpdate();
 			result = true;
 		} catch (SQLException e) {
